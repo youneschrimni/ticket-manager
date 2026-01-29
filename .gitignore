@@ -1,0 +1,21 @@
+# Dépendances (front + back)
+node_modules/
+api/node_modules/
+web/node_modules/
+
+# Builds
+dist/
+api/dist/
+web/dist/
+
+# Variables d'environnement (secrets)
+.env
+api/.env
+web/.env
+
+# Logs
+*.log
+
+# Fichiers système
+.DS_Store
+Thumbs.db
