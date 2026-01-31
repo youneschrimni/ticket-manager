@@ -1,4 +1,11 @@
-import "dotenv/config";
+import dotenv from "dotenv";
+
+dotenv.config({
+  path:
+    process.env.NODE_ENV === "production"
+      ? "/var/www/ticket-manager/shared/.env"
+      : ".env",
+});
 
 import pkg from "@prisma/client";
 const { PrismaClient } = pkg;

@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
 
 jobs:
@@ -31,11 +31,6 @@ jobs:
         working-directory: api
         run: npm run lint --if-present
 
-      # - name: API tests
-      #   working-directory: api
-      #   run: npm test --if-present
-
-      # Optionnel si tu as un build côté API (TS/webpack/etc.)
       - name: API build
         working-directory: api
         run: npm run build --if-present
@@ -49,17 +44,66 @@ jobs:
         working-directory: web
         run: npm run lint --if-present
 
-      # - name: WEB tests
-      #   working-directory: web
-      #   run: npm test --if-present
-
       - name: WEB build (Vite -> dist)
         working-directory: web
         run: npm run build
 
-      # Artifact utile pour vérifier le build Vite si besoin
       - name: Upload web dist artifact
         uses: actions/upload-artifact@v4
         with:
           name: web-dist
           path: web/dist
+
+  deploy:
+    needs: build_test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout (for API sources)
+        uses: actions/checkout@v4
+
+      - name: Download web artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: web-dist
+          path: web-dist
+
+      - name: Setup SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+      - name: Deploy WEB (dist -> VPS)
+        run: |
+          rsync -az --delete \
+            -e "ssh -p ${{ secrets.VPS_PORT }} -o StrictHostKeyChecking=no" \
+            web-dist/ \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/var/www/ticket-manager/web/current/
+
+      - name: Deploy API (source -> VPS)
+        run: |
+          rsync -az --delete \
+            --exclude node_modules \
+            --exclude .env \
+            --exclude dist \
+            -e "ssh -p ${{ secrets.VPS_PORT }} -o StrictHostKeyChecking=no" \
+            api/ \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/var/www/ticket-manager/api/current/
+
+      - name: Install deps + migrate + reload PM2
+        run: |
+          ssh -p ${{ secrets.VPS_PORT }} -o StrictHostKeyChecking=no \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+          set -e
+
+          cd /var/www/ticket-manager/api/current
+
+          npm ci --omit=dev
+
+          npx prisma generate
+          npx prisma migrate deploy
+
+          pm2 reload ticket-api --update-env || pm2 restart ticket-api --update-env
+          pm2 save
+          EOF
