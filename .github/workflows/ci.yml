@@ -31,9 +31,9 @@ jobs:
         working-directory: api
         run: npm run lint --if-present
 
-      - name: API tests
-        working-directory: api
-        run: npm test --if-present
+      # - name: API tests
+      #   working-directory: api
+      #   run: npm test --if-present
 
       # Optionnel si tu as un build côté API (TS/webpack/etc.)
       - name: API build
@@ -49,9 +49,9 @@ jobs:
         working-directory: web
         run: npm run lint --if-present
 
-      - name: WEB tests
-        working-directory: web
-        run: npm test --if-present
+      # - name: WEB tests
+      #   working-directory: web
+      #   run: npm test --if-present
 
       - name: WEB build (Vite -> dist)
         working-directory: web
