@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL ?? "/api";
+const API_URL = "VITE_API_URL=http://91.230.110.234:4000"
 
 if (!API_URL) {
   throw new Error("VITE_API_URL is missing");
