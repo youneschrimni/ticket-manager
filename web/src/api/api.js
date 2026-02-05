@@ -12,6 +12,14 @@ export async function apiFetch(path, options = {}) {
     },
   });
 
+  if (res.status === 401) {
+    localStorage.removeItem("accessToken");
+    localStorage.setItem("loginMessage", "Session expirée. Vous avez été déconnecté.");
+    window.location.href = "/";
+    return;
+  }
+
+
   // Si 204 No Content, pas de JSON à lire
   const data = res.status === 204 ? null : await res.json();
 

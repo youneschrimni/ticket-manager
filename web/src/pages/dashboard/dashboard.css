@@ -1,0 +1,27 @@
+/* Dashboard Component Styles */
+
+.container {
+  display: flex;
+  max-width: none;
+  padding: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.secondBlock {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Responsive design for dashboard */
+@media (max-width: 640px) {
+  .container {
+    flex-direction: column;
+    padding: 16px;
+  }
+  
+  .secondBlock {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
