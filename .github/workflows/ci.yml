@@ -116,6 +116,7 @@ jobs:
           npx prisma generate
           npx prisma migrate deploy
 
-          pm2 start ecosystem.config.cjs --env production || pm2 reload ticket-api --update-env
+          pm2 start /var/www/ticket-manager/api/ecosystem.config.cjs --env production --update-env
           pm2 save
+
           EOF
