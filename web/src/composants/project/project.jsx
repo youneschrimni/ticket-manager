@@ -25,7 +25,7 @@ export default function Project({ selectedProjectId, onSelectProject }) {
         }
       } catch (err) {
         if (!cancelled) {
-          setError("Erreur lors du chargement des projets");
+          setError("Erreur lors du chargement des projets", err);
         }
       } finally {
         if (!cancelled) {
@@ -51,7 +51,7 @@ export default function Project({ selectedProjectId, onSelectProject }) {
       setIsCreating(false);
       onSelectProject(created.id);
     } catch (err) {
-      setError("Erreur lors de la création du projet");
+      setError("Erreur lors de la création du projet", err);
     }
   }
 
