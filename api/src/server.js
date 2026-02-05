@@ -22,23 +22,23 @@ const app = express();
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 
-app.get("/health", (req, res) => {
+app.get("/api/health", (req, res) => {
   res.json({ ok: true });
 });
 
 app.use("/auth", authRoutes);
 
-app.get("/me", auth, (req, res) => {
+app.get("/api/me", auth, (req, res) => {
   res.json({ user: req.user });
 });
 
-app.use("/projects", projectRoutes);
+app.use("/api/projects", projectRoutes);
 
-app.use("/projects/:projectId/tickets", ticketRoutes);
+app.use("/api/projects/:projectId/tickets", ticketRoutes);
 
-app.use("/projects/:projectId/tickets/:ticketId/comments", commentsRoutes);
+app.use("/api/projects/:projectId/tickets/:ticketId/comments", commentsRoutes);
 
-app.use("/members", userRoutes);
+app.use("/api/members", userRoutes);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
