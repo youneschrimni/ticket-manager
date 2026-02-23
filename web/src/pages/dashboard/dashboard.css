@@ -1,27 +1,89 @@
-/* Dashboard Component Styles */
-
-.container {
+.empty-state {
+  padding: 32px;
+  height: 100vh;
   display: flex;
-  max-width: none;
-  padding: 0;
-  position: relative;
-  z-index: 1;
+  align-items: center;
+  justify-content: center;
 }
 
-.secondBlock {
-  flex: 1;
-  min-width: 0;
+.empty-card {
+  width: 100%;
+  max-width: 560px;
+  padding: 28px;
+  background: var(--card, #ffffff);
+  border: 1px solid var(--border-light, #e2e8f0);
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
 }
 
-/* Responsive design for dashboard */
+.empty-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--accent, #3b82f6), #1d4ed8);
+  color: white;
+  margin-bottom: 14px;
+}
+
+.empty-title {
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  color: var(--text, #0f172a);
+}
+
+.empty-text {
+  margin: 0 0 16px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-secondary, #334155);
+}
+
+.empty-hint {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--accent-light, #dbeafe);
+  color: var(--text, #0f172a);
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.hint-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--accent, #3b82f6);
+  flex: 0 0 auto;
+}
+
 @media (max-width: 640px) {
-  .container {
-    flex-direction: column;
-    padding: 16px;
+.empty-state{
+  flex:1;
+  min-height: 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:32px;
+}
+
+  .empty-card {
+    padding: 22px;
   }
-  
-  .secondBlock {
-    margin-left: 0;
-    margin-right: 0;
-  }
+}
+
+.container{
+  display:flex;
+  height:100vh;
+}
+
+.secondBlock{
+  flex:1;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
 }

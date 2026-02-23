@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { createProject, deleteProject, getProject } from "../../services/project.service";
 import "./project.css";
-import { Link } from "react-router-dom";
 
 export default function Project({ selectedProjectId, onSelectProject }) {
   const [projects, setProjects] = useState([]);
@@ -67,13 +66,19 @@ async function handleDeleteProject(projectId) {
 
   try {
     setError("");
-    await deleteProject(projectId);
-    setProjects(prev => prev.filter(p => p.id !== projectId));
+    await deleteProject(projectId).then(()=>{
+          setProjects(prev => prev.filter(p => p.id !== projectId));
 
     if (selectedProjectId === projectId) {
       const remaining = projects.filter(p => p.id !== projectId);
       onSelectProject(remaining[0]?.id || null);
+
+    if( remaining.length==0 ) {
+        onSelectProject("");
+      }
     }
+
+    });
   } catch (err) {
     setError(err.message || "Suppression impossible");
   }
